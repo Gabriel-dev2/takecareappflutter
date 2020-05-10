@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:takecare/animations/fadeAnimation.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   //Criação de Estado
@@ -11,11 +11,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    // Construção do context do app
     return new Scaffold(
+      // Criando objeto container do corpo
       body: new Container(
+        // Criando coluna principal, ela é a coluna reponsável por manter toda a estrutura do corpo
         child: Column(
+          // Lista dos widgets
           children: <Widget>[
+            // Container do logo
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height/2.5,
@@ -115,51 +119,43 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 16, right: 32
-                ),
-                child: Text("Esqueci minha senha",
-                style: TextStyle(
-                  color: Colors.grey
-                  )
-                ),
-              )
+            FlatButton(
+                onPressed: null,
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 16, right: 32
+                      ),
+                      child: Text("Esqueci minha senha",
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13.0
+                          ),
+                      ),
+                    )
+                )
             ),
 
             Container(
               padding: EdgeInsets.only(top: 32),
               child: Column(
                 children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.2,
-                    height: 50,
-                    margin: EdgeInsets.only(top: 16),
-                    padding: EdgeInsets.only(
-                        top: 4, left: 16, right: 16, bottom: 4
-                    ),
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                              Color(0xFF729dd2),
-                              Color(0xFF729dd2)
-                          ]
-                      ),
-                          borderRadius: BorderRadius.all(
-                          Radius.circular(50)
-                          )
-                    ),
-                    child: Center(
-                        child: Text("Login".toUpperCase(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                          ),
-                        )
-                    )
-                  )
+                FlatButton(
+                  color: Colors.blueAccent,
+                  textColor: Colors.white,
+                  disabledColor: Colors.grey,
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                  onPressed: () {
+
+                  },
+                  child: Text(
+                    "Login",
+                    style: TextStyle(fontSize: 15.0),
+                  ),
+                )
                 ],
               ),
             ),
