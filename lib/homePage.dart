@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:takecare/profilePage.dart';
+
+import 'classes/Paciente.dart';
 
 class HomePage extends StatefulWidget {
   //Criação de Estado
@@ -9,6 +14,13 @@ class HomePage extends StatefulWidget {
 }
 // Criando Página inicial (Tela de Login)
 class _HomePageState extends State<HomePage> {
+  int submit = 0;
+  String cpf = "";
+  String password = "";
+
+  TextEditingController _controller = new TextEditingController();
+  TextEditingController _controller2 = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     // Construção do context do app
@@ -79,6 +91,10 @@ class _HomePageState extends State<HomePage> {
                         hintText: "CPF",
                       ),
                       keyboardType: TextInputType.number,
+                      onChanged: (String CPF) {
+                        cpf = CPF;
+                      },
+                      controller: _controller,
                     ),
                   )
                 ],
@@ -113,7 +129,11 @@ class _HomePageState extends State<HomePage> {
                         hintText: "Senha",
                       ),
                       keyboardType: TextInputType.text,
+                      onChanged: (String senha) {
+                        password = senha;
+                      },
                       obscureText: true,
+                      controller: _controller2,
                     ),
                   )
                 ],
@@ -149,7 +169,68 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(8.0),
                   splashColor: Colors.blueAccent,
                   onPressed: () {
-
+                    if(submit == 0){
+                      _controller.clear();
+                      _controller2.clear();
+                      // mock
+                      String CPF = "01234567809";
+                      String senha = "abcd@1234";
+                      if(CPF == cpf && senha == password){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ProfilePage()),
+                          );
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: new Text("Aviso"),
+                                content: new Text("Usuário ou senha incorreto"),
+                                actions: <Widget>[
+                                  new FlatButton(
+                                      child: new Text("Fechar"),
+                                      onPressed: (){
+                                        Navigator.of(context).pop();
+                                      },
+                                  )
+                                ],
+                              );
+                            }
+                          );
+                      }
+//                      Future<Paciente> fetchPaciente() async {
+//                        String jsonBody = '{"cpf": "$cpf", "senha": "$password"}';
+//                        final response = await http.post("http://localhost:8080/api/auth/paciente/login", body: jsonBody);
+//                        print("To passando");
+//                        if(response.statusCode == 200) {
+//                          Navigator.push(
+//                            context,
+//                            MaterialPageRoute(builder: (context) => ProfilePage()),
+//                          );
+//                          return Paciente.fromJson(json.decode(response.body));
+//                        } else {
+//                          showDialog(
+//                            context: context,
+//                            builder: (BuildContext context) {
+//                              return AlertDialog(
+//                                title: new Text("Aviso"),
+//                                content: new Text("Usuário ou senha incorreto"),
+//                                actions: <Widget>[
+//                                  new FlatButton(
+//                                      child: new Text("Fechar"),
+//                                      onPressed: (){
+//                                        Navigator.of(context).pop();
+//                                      },
+//                                  )
+//                                ],
+//                              );
+//                            }
+//                          );
+//                        }
+//                      }
+//                      fetchPaciente();
+                    }
                   },
                   child: Text(
                     "Login",
