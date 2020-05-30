@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:takecare/homePage.dart';
+import 'package:takecare/mainMenu.dart';
 import 'package:takecare/profilePage.dart';
 
 import 'checkBoxTela.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        '/second': (context) => ProfilePage(),
+        '/second': (context) => MainMenu()
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
