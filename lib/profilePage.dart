@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:takecare/homePage.dart';
+import 'package:takecare/mainMenu.dart';
 
 import 'classes/Paciente.dart';
 
@@ -29,31 +30,9 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
                  if(submit == 0){
-                   showDialog(
-                       context: context,
-                       builder: (BuildContext context) {
-                         return AlertDialog(
-                           title: new Text("Aviso"),
-                           content: new Text("Você está prestes a sair, tem certeza que deseja continuar"),
-                           actions: <Widget>[
-                             new FlatButton(
-                               child: new Text("Sair"),
-                               onPressed: (){
-                                 Navigator.push(
-                                   context,
-                                   MaterialPageRoute(builder: (context) => HomePage()),
-                                 );
-                               },
-                             ),
-                             new FlatButton(
-                                 child: new Text("Fechar"),
-                               onPressed: (){
-                                 Navigator.of(context).pop();
-                               }
-                             )
-                           ],
-                         );
-                       }
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute(builder: (context) => MainMenu()),
                    );
                  }
               }
