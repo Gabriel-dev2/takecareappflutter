@@ -1,128 +1,108 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:takecare/classes/CheckBoxItem.dart';
+import 'package:takecare/mainMenu.dart';
+import 'package:takecare/waitScreen.dart';
 
 class CheckBoxTela extends StatefulWidget {
 
+  var items = new List<CheckBoxItem>();
+
+  CheckBoxTela() {
+    items = [];
+    items.add(CheckBoxItem(title: "Acidente de carro", checked: false));
+    items.add(CheckBoxItem(title: "Acidente de Moto", checked: false));
+    items.add(CheckBoxItem(title: "Afogamento", checked: false));
+    items.add(CheckBoxItem(title: "Queimadura", checked: false));
+    items.add(CheckBoxItem(title: "Choque elétrico", checked: false));
+  }
   @override
   _CheckBoxTela createState() => _CheckBoxTela();
 
 }
 
 class _CheckBoxTela extends State<CheckBoxTela> {
-  get checkChanged => null;
+
+  int submit = 0;
+  int checked = 0;
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('O que você está sentindo?'),
+        title: new Text('Motivo de Chamada', style: GoogleFonts.openSans(
+          textStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold
+          )
+        ),),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            if(submit == 0) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MainMenu())
+              );
+            }
+          },
+        ),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Text("Próximo", style: GoogleFonts.openSans(
+              textStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.w400
+              )
+            ),),
+            onPressed: (){
+              if(checked == 1){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => WaitScreen()),
+                );
+              } else {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Aviso"),
+                          content: Text("É necessário selecionar um dos motivos para continuar"),
+                          actions: <Widget>[
+                            new FlatButton(
+                                child: Text("Fechar"),
+                              onPressed: () {
+                                  Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      }
+                  );
+              }
+            },
+          ),
+        ],
       ),
-      body: new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        new Text(
-                          "Acidente de carro ",
-                          style: new TextStyle(fontSize:25.0,
-                              color: const Color(0xFF000000),
-                              fontWeight: FontWeight.w300,
-                              fontFamily: "Merriweather"),
-                        ),
+      body: ListView.builder(
+          itemCount: widget.items.length,
+          itemBuilder: (BuildContext ctxt, int index){
+            final item = widget.items[index];
 
-                        new Checkbox(key:null, onChanged: checkChanged, value:false)
-                      ]
-
-                  )
-                ]
-
-            ),
-
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Text(
-                    "Acidente de Moto ",
-                    style: new TextStyle(fontSize:25.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w200,
-                        fontFamily: "Merriweather"),
-                  ),
-
-                  new Checkbox(key:null, onChanged: checkChanged, value:true)
-                ]
-
-            ),
-
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Text(
-                    "Afogamento ",
-                    style: new TextStyle(fontSize:25.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w200,
-                        fontFamily: "Merriweather"),
-                  ),
-
-                  new Checkbox(key:null, onChanged: checkChanged, value:true)
-                ]
-
-            ),
-
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Text(
-                    "Queimadura ",
-                    style: new TextStyle(fontSize:25.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w200,
-                        fontFamily: "Merriweather"),
-                  ),
-
-                  new Checkbox(key:null, onChanged: checkChanged, value:true)
-                ]
-
-            ),
-
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Text(
-                    "Choque elétrico ",
-                    style: new TextStyle(fontSize:25.0,
-                        color: const Color(0xFF000000),
-                        fontWeight: FontWeight.w200,
-                        fontFamily: "Merriweather"),
-                  ),
-
-                  new Checkbox(key:null, onChanged: checkChanged, value:true)
-                ]
-
-            )
-          ]
-
-      ),
-
+            return CheckboxListTile(
+              title: Text(item.title),
+              key: Key(item.title),
+              value: item.checked,
+              onChanged: (value){
+                  setState(() {
+                    item.checked = value;
+                    checked = 1;
+                  });
+              },
+            );
+          })
     );
   }
 
