@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:takecare/profilePage.dart';
 
 import 'classes/Paciente.dart';
+import 'mainMenu.dart';
 
 class HomePage extends StatefulWidget {
   //Criação de Estado
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                       if(CPF == cpf && senha == password){
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()),
+                            MaterialPageRoute(builder: (context) => MainMenu()),
                           );
                       } else {
                         showDialog(
