@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:takecare/classes/PacienteObject.dart';
 import 'package:takecare/homePage.dart';
 import 'package:takecare/mainMenu.dart';
 
 import 'classes/Paciente.dart';
 
 class ProfilePage extends StatefulWidget {
+
+  final String name;
+  final String address;
+  final String cpf;
+  final int houseNumber;
+  final int idPlano;
+  final String email;
+  ProfilePage(this.name, this.address, this.cpf, this.houseNumber, this.idPlano, this.email);
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState(name: this.name, address: this.address, cpf: this.cpf, houseNumber: this.houseNumber, idPlano: this.idPlano, email: this.email);
 }
 
 
-//int age = 12;
-
 class _ProfilePageState extends State<ProfilePage> {
-  // mock
-  String name = "Gabriel Lucas";
-  String address = 'Rua Faisão, Ouro Preto';
-  String cpf = '01234567809';
-  int houseNumber = 27;
+
+  final String name;
+  final String address;
+  final String cpf;
+  final int houseNumber;
+  final int idPlano;
+  final String email;
+  _ProfilePageState({Key key, @required this.name, this.address, this.cpf, this.houseNumber, this.idPlano, this.email});
 
   int submit = 0;
 
@@ -32,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
                  if(submit == 0){
                    Navigator.push(
                      context,
-                     MaterialPageRoute(builder: (context) => MainMenu()),
+                     MaterialPageRoute(builder: (context) => MainMenu(cpf)),
                    );
                  }
               }
@@ -69,32 +79,32 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-//            Align(
-//              alignment: Alignment.centerLeft,
-//              child: Padding(padding: const EdgeInsets.only(
-//                top: 22, left: 32
-//              ),
-//                child: Text("Idade: ",
-//                  style: TextStyle(
-//                    fontSize: 20.0,
-//                    fontStyle: FontStyle.normal
-//                  ),
-//                ),
-//              ),
-//            ),
-//            Align(
-//              alignment: Alignment.centerLeft,
-//              child: Padding(padding: const EdgeInsets.only(
-//                top: 16, left: 32
-//              ),
-//                child: Text(age.toString(),
-//                  style: TextStyle(
-//                    fontSize: 20.0,
-//                    fontStyle: FontStyle.normal
-//                  ),
-//                ),
-//              ),
-//            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(padding: const EdgeInsets.only(
+                top: 22, left: 32
+              ),
+                child: Text("Email: ",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontStyle: FontStyle.normal
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(padding: const EdgeInsets.only(
+                top: 16, left: 32
+              ),
+                child: Text(this.email,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontStyle: FontStyle.normal
+                  ),
+                ),
+              ),
+            ),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(padding: const EdgeInsets.only(
@@ -172,6 +182,27 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 32),
+              child: Column(
+              children: <Widget>[
+                FlatButton(
+                color: Colors.blueAccent,
+                    textColor: Colors.white,
+                    disabledColor: Colors.grey,
+                    disabledTextColor: Colors.black,
+                    padding: EdgeInsets.all(8.0),
+                    splashColor: Colors.blueAccent,
+                    onPressed: () {
+
+                    },
+                  child: Text("Alterar perfil",
+                    style: TextStyle(fontSize: 15.0),
+                  ),
+                  ),
+                ]
+              )
             )
           ],
         ),
