@@ -1,19 +1,21 @@
+import 'PacienteObject.dart';
+
 class Paciente {
+  PacienteObject paciente;
 
-   static String cpf;
-   static String nome;
-   static String endereco;
-   static int numeroCasa;
+  Paciente({this.paciente});
 
-  Paciente({cpf, nome, endereco, numeroCasa});
+  Paciente.fromJson(Map<String, dynamic> json) {
+    paciente = json['paciente'] != null
+        ? new PacienteObject.fromJson(json['paciente'])
+        : null;
+  }
 
-  factory Paciente.fromJson(Map<String, dynamic> json) {
-    return Paciente (
-      cpf : json['cpf'],
-      nome : json['nome'],
-      endereco : json['endereco'],
-      numeroCasa : json['numeroCasa']
-    );
-
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.paciente != null) {
+      data['paciente'] = this.paciente.toJson();
+    }
+    return data;
   }
 }
