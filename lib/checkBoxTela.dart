@@ -43,7 +43,7 @@ class _CheckBoxTela extends State<CheckBoxTela> {
           onPressed: () {
             if(submit == 0) {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MainMenu())
+                  MaterialPageRoute(builder: (context) => MainMenu(""))
               );
             }
           },
