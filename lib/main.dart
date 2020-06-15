@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        '/second': (context) => MainMenu()
+        '/second': (context) => MainMenu("")
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
