@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:takecare/checkBoxTela.dart';
+import 'package:takecare/classes/Paciente.dart';
+import 'package:takecare/classes/PacienteObject.dart';
 import 'package:takecare/profilePage.dart';
 
 class GridDashboard extends StatelessWidget {
+
+  final String cpf;
+
+  GridDashboard(this.cpf);
 
   Item item1 = new Item(
     title: "Hospitais",
@@ -56,10 +64,29 @@ class GridDashboard extends StatelessWidget {
 
                           }
                           else if("Perfil" == data.title){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ProfilePage()),
-                            );
+                            PacienteObject p = new PacienteObject();
+                            Future<Paciente> fetchPaciente() async {
+                              String cpf = this.cpf;
+                              String jsonBody = '{"cpf": "$cpf"}';
+                              final response = await http.post("https://takecare-api.herokuapp.com/api/v1/user/getByCpf", body: jsonBody,
+                                  headers: {"Accept": "application/json", "Content-Type": "application/json"});
+                              if(response.statusCode == 200) {
+                                var paciente = Paciente.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+                                p.setcpf(paciente.paciente.cpf);
+                                p.setEmail(paciente.paciente.email);
+                                p.setEndereco(paciente.paciente.endereco);
+                                p.setId(paciente.paciente.id);
+                                p.setIdPlano(paciente.paciente.idPlano);
+                                p.setName(paciente.paciente.name);
+                                p.setNumCasa(paciente.paciente.numeroCasa);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ProfilePage(p.getName(), p.getEndereco(), p.getCpf(), p.getNumCasa(), p.getIdPlano(), p.getEmail())),
+                                );
+                                return paciente;
+                              }
+                            }
+                            fetchPaciente();
                           }
                           else if("Ambulância" == data.title) {
                             Navigator.push(
