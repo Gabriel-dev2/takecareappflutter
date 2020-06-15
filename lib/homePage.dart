@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'classes/Paciente.dart';
+import 'classes/Login.dart';
 import 'mainMenu.dart';
 
 class HomePage extends StatefulWidget {
@@ -172,16 +172,20 @@ class _HomePageState extends State<HomePage> {
                     if(submit == 0){
                       _controller.clear();
                       _controller2.clear();
-                      // mock
-                      String CPF = "01234567809";
-                      String senha = "abcd@1234";
-                      if(CPF == cpf && senha == password){
-                        Navigator.push(
+                      Future<Login> fetchPaciente() async {
+                        String jsonBody = '{"cpf": "$cpf", "senha": "$password"}';
+                        final response = await http.post("https://takecare-api.herokuapp.com/api/auth/paciente/login", body: jsonBody,
+                        headers: {"Accept": "application/json", "Content-Type": "application/json"});
+                        var retorno = Login.fromJson(json.decode(response.body));
+                        String _cpf = retorno.getCpfObject();
+                        if(response.statusCode == 200) {
+                          Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => MainMenu()),
+                            MaterialPageRoute(builder: (context) => MainMenu(_cpf)),
                           );
-                      } else {
-                        showDialog(
+                          return Login.fromJson(json.decode(response.body));
+                        } else if(response.statusCode == 404){
+                          showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
@@ -198,38 +202,27 @@ class _HomePageState extends State<HomePage> {
                               );
                             }
                           );
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: new Text("Aviso"),
+                                  content: new Text("Problema ao autenticar tente novamente mais tarde ou contate o suporte"),
+                                  actions: <Widget>[
+                                    new FlatButton(
+                                      child: new Text("Fechar"),
+                                      onPressed: (){
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ],
+                                );
+                              }
+                          );
+                        }
                       }
-//                      Future<Paciente> fetchPaciente() async {
-//                        String jsonBody = '{"cpf": "$cpf", "senha": "$password"}';
-//                        final response = await http.post("http://localhost:8080/api/auth/paciente/login", body: jsonBody);
-//                        print("To passando");
-//                        if(response.statusCode == 200) {
-//                          Navigator.push(
-//                            context,
-//                            MaterialPageRoute(builder: (context) => ProfilePage()),
-//                          );
-//                          return Paciente.fromJson(json.decode(response.body));
-//                        } else {
-//                          showDialog(
-//                            context: context,
-//                            builder: (BuildContext context) {
-//                              return AlertDialog(
-//                                title: new Text("Aviso"),
-//                                content: new Text("Usuário ou senha incorreto"),
-//                                actions: <Widget>[
-//                                  new FlatButton(
-//                                      child: new Text("Fechar"),
-//                                      onPressed: (){
-//                                        Navigator.of(context).pop();
-//                                      },
-//                                  )
-//                                ],
-//                              );
-//                            }
-//                          );
-//                        }
-//                      }
-//                      fetchPaciente();
+                      fetchPaciente();
                     }
                   },
                   child: Text(
