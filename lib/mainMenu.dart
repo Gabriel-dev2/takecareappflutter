@@ -2,21 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'classes/Login.dart';
+import 'classes/Paciente.dart';
 import 'homePage.dart';
 import 'models/gridDashboard.dart';
 
 class MainMenu extends StatefulWidget {
+  final String cpf;
+  MainMenu(this.cpf);
   @override
-  _MainMenu createState() => _MainMenu();
+  _MainMenu createState() => _MainMenu(cpf: this.cpf);
 }
 
 class _MainMenu extends State<MainMenu> {
 
   int submit = 0;
+  final String cpf;
+  _MainMenu({Key key, @required this.cpf});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
       backgroundColor: Color(0xFF729dd2),
       body: Column(
@@ -106,7 +111,7 @@ class _MainMenu extends State<MainMenu> {
           ),
           SizedBox(height: 40,
           ),
-          GridDashboard()
+          GridDashboard(this.cpf)
         ],
       ),
         );
