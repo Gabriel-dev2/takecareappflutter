@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takecare/changeRegistration.dart';
 import 'package:takecare/classes/PacienteObject.dart';
 import 'package:takecare/homePage.dart';
 import 'package:takecare/mainMenu.dart';
@@ -195,7 +196,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: EdgeInsets.all(8.0),
                     splashColor: Colors.blueAccent,
                     onPressed: () {
-
+                      if(submit == 0){
+                        Navigator.push(
+                        context,
+                          MaterialPageRoute(builder: (context) => ChangeRegistration()),
+                        );
+                      }
                     },
                   child: Text("Alterar perfil",
                     style: TextStyle(fontSize: 15.0),
