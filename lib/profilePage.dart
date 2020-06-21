@@ -3,33 +3,39 @@ import 'package:takecare/changeRegistration.dart';
 import 'package:takecare/classes/PacienteObject.dart';
 import 'package:takecare/homePage.dart';
 import 'package:takecare/mainMenu.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'classes/Paciente.dart';
 
 class ProfilePage extends StatefulWidget {
 
+  final String cpf;
   final String name;
   final String address;
-  final String cpf;
   final int houseNumber;
   final int idPlano;
   final String email;
-  ProfilePage(this.name, this.address, this.cpf, this.houseNumber, this.idPlano, this.email);
+  final int id;
+
+  ProfilePage(this.cpf, this.name, this.address, this.houseNumber, this.idPlano, this.email, this.id);
+
   @override
-  _ProfilePageState createState() => _ProfilePageState(name: this.name, address: this.address, cpf: this.cpf, houseNumber: this.houseNumber, idPlano: this.idPlano, email: this.email);
+  _ProfilePageState createState() => _ProfilePageState(this.cpf, this.name, this.address, this.houseNumber, this.idPlano, this.email, this.id);
+
 }
 
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  final String name;
-  final String address;
-  final String cpf;
-  final int houseNumber;
-  final int idPlano;
-  final String email;
-  _ProfilePageState({Key key, @required this.name, this.address, this.cpf, this.houseNumber, this.idPlano, this.email});
-
+  String name;
+  String address;
+  String cpf;
+  int houseNumber;
+  int idPlano;
+  String email;
+  int id;
+  _ProfilePageState(this.cpf, this.name, this.address, this.houseNumber, this.idPlano, this.email, this.id);
   int submit = 0;
 
   @override
@@ -199,7 +205,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       if(submit == 0){
                         Navigator.push(
                         context,
-                          MaterialPageRoute(builder: (context) => ChangeRegistration()),
+                          MaterialPageRoute(builder: (context) => ChangeRegistration(name, address, cpf, houseNumber, idPlano,email, id)),
                         );
                       }
                     },
