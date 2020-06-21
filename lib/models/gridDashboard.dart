@@ -73,15 +73,15 @@ class GridDashboard extends StatelessWidget {
                               if(response.statusCode == 200) {
                                 var paciente = Paciente.fromJson(json.decode(utf8.decode(response.bodyBytes)));
                                 p.setcpf(paciente.paciente.cpf);
-                                p.setEmail(paciente.paciente.email);
-                                p.setEndereco(paciente.paciente.endereco);
-                                p.setId(paciente.paciente.id);
-                                p.setIdPlano(paciente.paciente.idPlano);
-                                p.setName(paciente.paciente.name);
-                                p.setNumCasa(paciente.paciente.numeroCasa);
+                                p.setNumCasa(paciente.paciente.getNumCasa());
+                                p.setIdPlano(paciente.paciente.getIdPlano());
+                                p.setEmail(paciente.paciente.getEmail());
+                                p.setId(paciente.paciente.getId());
+                                p.setName(paciente.paciente.getName());
+                                p.setEndereco(paciente.paciente.getEndereco());
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => ProfilePage(p.getName(), p.getEndereco(), p.getCpf(), p.getNumCasa(), p.getIdPlano(), p.getEmail())),
+                                  MaterialPageRoute(builder: (context) => ProfilePage(p.getCpf(), p.getName(), p.getEndereco(), p.getNumCasa(), p.getIdPlano(), p.getEmail(), p.getId())),
                                 );
                                 return paciente;
                               }
