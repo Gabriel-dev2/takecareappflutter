@@ -1,30 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:takecare/mainMenu.dart';
 import 'package:takecare/profilePage.dart';
 import 'package:http/http.dart' as http;
-import 'package:takecare/classes/Paciente.dart';
-import 'package:takecare/classes/PacienteObject.dart';
 import 'dart:convert';
 
+import 'classes/PacienteObject.dart';
+import 'classes/Paciente.dart';
+
 class ChangeRegistration extends StatefulWidget {
+  final String name;
+  final String address;
+  final String cpf;
+  final int houseNumber;
+  final int idPlano;
+  final String email;
+  final int id;
+
+  ChangeRegistration(this.name, this.address, this.cpf, this.houseNumber, this.idPlano, this.email, this.id);
   @override
-  _ChangeRegistration createState() => _ChangeRegistration();
+  _ChangeRegistration createState() => _ChangeRegistration(this.name, this.address, this.cpf, this.houseNumber, this.idPlano, this.email, this.id);
 }
 
 class _ChangeRegistration extends State<ChangeRegistration> {
-  String testeNome = "Gabriel Lucas";
+  String nome;
   String novoNome = "";
-  String email = "gabriel.lima@outlook.com";
+  String email;
   String novoEmail = "";
-  String endereco = "Rua Faisão, Ouro Preto, Olinda";
+  String endereco;
   String novoEndereco = "";
-  String cpf = "01234567809";
+  String cpf;
   int id;
   int idPlano;
-  String novoCpf = "";
-  int houseNumber = 27;
+  int houseNumber;
   int novoNumeroCasa;
+
+  _ChangeRegistration(this.nome, this.endereco, this.cpf, this.houseNumber, this.idPlano, this.email, this.id);
 
   int submit = 0;
   @override
@@ -37,10 +47,28 @@ class _ChangeRegistration extends State<ChangeRegistration> {
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
                 if(submit == 0){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfilePage(testeNome,endereco,cpf, houseNumber, 1, email)),
-                  );
+                  PacienteObject p = new PacienteObject();
+                  Future<Paciente> fetchPaciente(String cpf) async {
+                    String jsonBody = '{"cpf": "$cpf"}';
+                    final response = await http.post("https://takecare-api.herokuapp.com/api/v1/user/getByCpf", body: jsonBody,
+                        headers: {"Accept": "application/json", "Content-Type": "application/json"});
+                    if(response.statusCode == 200) {
+                      var paciente = Paciente.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+                      p.setName(paciente.paciente.getName());
+                      p.setEndereco(paciente.paciente.getEndereco());
+                      p.setcpf(paciente.paciente.getCpf());
+                      p.setNumCasa(paciente.paciente.getNumCasa());
+                      p.setIdPlano(paciente.paciente.getIdPlano());
+                      p.setEmail(paciente.paciente.getEmail());
+                      p.setId(paciente.paciente.getId());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfilePage(this.cpf, this.nome, this.endereco, this.houseNumber, this.idPlano, this.email, this.id)),
+                      );
+                      return paciente;
+                    }
+                  }
+                  fetchPaciente(cpf);
                 }
               }
           ),
@@ -86,14 +114,14 @@ class _ChangeRegistration extends State<ChangeRegistration> {
                       ]
                   ),
                   child: TextFormField(
-                      initialValue: testeNome,
+                      initialValue: nome,
                       style: TextStyle(
                           fontSize: 20.0,
                           fontStyle: FontStyle.normal
                       ),
                       onChanged: (String novoNome) {
-                        if(novoNome != testeNome) {
-                          testeNome = novoNome;
+                        if(novoNome != nome) {
+                          nome = novoNome;
                         }
                       }
                   ),
@@ -146,8 +174,8 @@ class _ChangeRegistration extends State<ChangeRegistration> {
                           fontStyle: FontStyle.normal
                       ),
                       onChanged: (String novoEmail) {
-                        if(novoEmail != email) {
-                          email = novoEmail;
+                        if(novoEmail != this.email) {
+                          this.email = novoEmail;
                         }
                       }
                   ),
@@ -335,16 +363,48 @@ class _ChangeRegistration extends State<ChangeRegistration> {
                         if(submit == 0){
                           Future<String> updateUserData() async {
                             String cpf = this.cpf;
-                            String jsonBody = '{"cpf":"$cpf","email":"$email","endereco":"$endereco","id":$id,"idPlano":$idPlano,"name":"$testeNome","numeroCasa":$houseNumber,"senha":"string"}';
+                            String jsonBody = '{"cpf":"$cpf","email":"$email","endereco":"$endereco","id":$id,"idPlano":$idPlano,"name":"$nome","numeroCasa":$houseNumber,"senha":"string"}';
                             final response = await http.post("https://takecare-api.herokuapp.com/api/v1/user/editUser", body: jsonBody,
                                 headers: {"Accept": "application/json", "Content-Type": "application/json"});
                             if(response.statusCode == 200) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => ChangeRegistration()),
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: new Text("Aviso"),
+                                      content: new Text("Dados alterados com sucesso"),
+                                      actions: <Widget>[
+                                        new FlatButton(
+                                            child: new Text("Fechar"),
+                                            onPressed: (){
+                                              Navigator.of(context).pop();
+                                            }
+                                        )
+                                      ],
+                                    );
+                                  }
+                              );
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: new Text("Aviso"),
+                                      content: new Text("Houve um problema ao atualizar seus dados, tente novamente mais tarde"),
+                                      actions: <Widget>[
+                                        new FlatButton(
+                                            child: new Text("Fechar"),
+                                            onPressed: (){
+                                              Navigator.of(context).pop();
+                                            }
+                                        )
+                                      ],
+                                    );
+                                  }
                               );
                             }
                           }
+                          updateUserData();
                         }
                       },
                       child: Text("Salvar",
