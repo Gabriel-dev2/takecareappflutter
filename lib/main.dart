@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:takecare/homePage.dart';
 import 'package:takecare/mainMenu.dart';
 import 'package:takecare/profilePage.dart';
+import 'package:takecare/locations.dart';
 
 import 'checkBoxTela.dart';
 
