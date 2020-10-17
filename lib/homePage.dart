@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                   Align(
                     alignment: Alignment.center,
                       child: Image(
-                        image: new AssetImage("assets/takecare-logo.png"),
+                        image: new AssetImage("assets/Secuida-logo.png"),
                         width: 200,
                       )
                     )
@@ -93,6 +93,7 @@ class _HomePageState extends State<HomePage> {
                       keyboardType: TextInputType.number,
                       onChanged: (String CPF) {
                         cpf = CPF;
+                        // print(cpf);
                       },
                       controller: _controller,
                     ),
@@ -131,6 +132,7 @@ class _HomePageState extends State<HomePage> {
                       keyboardType: TextInputType.text,
                       onChanged: (String senha) {
                         password = senha;
+                        // print(password);
                       },
                       obscureText: true,
                       controller: _controller2,
@@ -174,9 +176,11 @@ class _HomePageState extends State<HomePage> {
                       _controller2.clear();
                       Future<Login> fetchPaciente() async {
                         String jsonBody = '{"cpf": "$cpf", "senha": "$password"}';
+                        // print(jsonBody);
                         final response = await http.post("https://takecare-api.herokuapp.com/api/auth/paciente/login", body: jsonBody,
                         headers: {"Accept": "application/json", "Content-Type": "application/json"});
                         var retorno = Login.fromJson(json.decode(response.body));
+                        // print(response.body);
                         String _cpf = retorno.getCpfObject();
                         if(response.statusCode == 200) {
                           Navigator.push(
