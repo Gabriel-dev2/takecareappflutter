@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:takecare/homePage.dart';
 import 'package:takecare/mainMenu.dart';
-import 'package:takecare/profilePage.dart';
-import 'package:takecare/locations.dart';
-
-import 'checkBoxTela.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TakeCareApp',
+      title: 'SeCuida',
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
@@ -22,7 +18,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-//      home: CheckBoxTela(),
     );
   }
 }
