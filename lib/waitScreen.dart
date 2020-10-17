@@ -3,13 +3,21 @@ import 'package:flutter/material.dart';
 import 'mainMenu.dart';
 
 class WaitScreen extends StatefulWidget {
+
+  final String cpf;
+  
+  WaitScreen(this.cpf);
+
   @override
-  _WaitScreen createState() => _WaitScreen();
+  _WaitScreen createState() => _WaitScreen(this.cpf);
 }
 
 class _WaitScreen extends State<WaitScreen> {
 
   int submit = 0;
+  String cpf;
+
+  _WaitScreen(this.cpf);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +53,7 @@ class _WaitScreen extends State<WaitScreen> {
                           if(submit == 0) {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => MainMenu("")),
+                              MaterialPageRoute(builder: (context) => MainMenu(this.cpf)),
                             );
                           }
                         },
