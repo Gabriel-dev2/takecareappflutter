@@ -6,6 +6,7 @@ import 'package:takecare/checkBoxTela.dart';
 import 'package:takecare/classes/Paciente.dart';
 import 'package:takecare/classes/PacienteObject.dart';
 import 'package:takecare/profilePage.dart';
+import 'package:takecare/MapsPage.dart';
 
 class GridDashboard extends StatelessWidget {
 
@@ -61,7 +62,9 @@ class GridDashboard extends StatelessWidget {
                       onPressed: () {
                         if(submit == 0){
                           if("Hospitais" == data.title) {
-
+                            Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => MapsPage(this.cpf))
+                            );
                           }
                           else if("Perfil" == data.title){
                             PacienteObject p = new PacienteObject();
@@ -91,7 +94,7 @@ class GridDashboard extends StatelessWidget {
                           else if("Ambulância" == data.title) {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CheckBoxTela()),
+                              MaterialPageRoute(builder: (context) => CheckBoxTela(this.cpf)),
                             );
                           }
                           else if("Histórico" == data.title) {
