@@ -36,7 +36,7 @@ class _MainMenu extends State<MainMenu> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Bem Vindo ao Take Care", style: GoogleFonts.openSans(
+                    Text("Bem Vindo ao Se Cuida", style: GoogleFonts.openSans(
                       textStyle: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
