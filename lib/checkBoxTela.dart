@@ -8,7 +8,9 @@ class CheckBoxTela extends StatefulWidget {
 
   var items = new List<CheckBoxItem>();
 
-  CheckBoxTela() {
+  final String cpf;
+
+  CheckBoxTela(this.cpf) {
     items = [];
     items.add(CheckBoxItem(title: "Acidente de carro", checked: false));
     items.add(CheckBoxItem(title: "Acidente de Moto", checked: false));
@@ -17,7 +19,7 @@ class CheckBoxTela extends StatefulWidget {
     items.add(CheckBoxItem(title: "Choque elétrico", checked: false));
   }
   @override
-  _CheckBoxTela createState() => _CheckBoxTela();
+  _CheckBoxTela createState() => _CheckBoxTela(this.cpf);
 
 }
 
@@ -25,6 +27,9 @@ class _CheckBoxTela extends State<CheckBoxTela> {
 
   int submit = 0;
   int checked = 0;
+  String cpf;
+
+  _CheckBoxTela(this.cpf);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,7 @@ class _CheckBoxTela extends State<CheckBoxTela> {
           onPressed: () {
             if(submit == 0) {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MainMenu(""))
+                  MaterialPageRoute(builder: (context) => MainMenu(this.cpf))
               );
             }
           },
@@ -61,7 +66,7 @@ class _CheckBoxTela extends State<CheckBoxTela> {
               if(checked == 1){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => WaitScreen()),
+                MaterialPageRoute(builder: (context) => WaitScreen(this.cpf)),
                 );
               } else {
                   showDialog(
