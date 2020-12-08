@@ -7,6 +7,7 @@ import 'package:takecare/classes/Paciente.dart';
 import 'package:takecare/classes/PacienteObject.dart';
 import 'package:takecare/profilePage.dart';
 import 'package:takecare/MapsPage.dart';
+import 'package:takecare/waitScreen.dart';
 
 class GridDashboard extends StatelessWidget {
 
@@ -94,7 +95,7 @@ class GridDashboard extends StatelessWidget {
                           else if("Ambulância" == data.title) {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CheckBoxTela(this.cpf)),
+                              MaterialPageRoute(builder: (context) => WaitScreen(this.cpf)),
                             );
                           }
                           else if("Histórico" == data.title) {
