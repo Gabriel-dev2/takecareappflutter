@@ -5,19 +5,21 @@ import 'mainMenu.dart';
 class WaitScreen extends StatefulWidget {
 
   final String cpf;
+  final String message;
   
-  WaitScreen(this.cpf);
+  WaitScreen(this.cpf, this.message);
 
   @override
-  _WaitScreen createState() => _WaitScreen(this.cpf);
+  _WaitScreen createState() => _WaitScreen(this.cpf, this.message);
 }
 
 class _WaitScreen extends State<WaitScreen> {
 
   int submit = 0;
   String cpf;
+  String message;
 
-  _WaitScreen(this.cpf);
+  _WaitScreen(this.cpf, this.message);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,13 @@ class _WaitScreen extends State<WaitScreen> {
                       padding: const EdgeInsets.only(
                         top: 300,
                       ),
-                    child: Center(child: Text("Solicitação enviada com sucesso!\nPor favor aguarde no local")),
+                    child: Center(child: Text(message,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontStyle: FontStyle.italic
+                      )
+                        )
+                      ),
                   ),
                 ),
               Align(

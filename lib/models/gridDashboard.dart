@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:takecare/HistoricPage.dart';
 import 'dart:convert';
 import 'package:takecare/checkBoxTela.dart';
+import 'package:takecare/classes/Emergencia.dart';
+import 'package:takecare/classes/Historico.dart';
 import 'package:takecare/classes/Paciente.dart';
 import 'package:takecare/classes/PacienteObject.dart';
 import 'package:takecare/profilePage.dart';
 import 'package:takecare/MapsPage.dart';
+import 'package:takecare/waitScreen.dart';
 
 class GridDashboard extends StatelessWidget {
 
@@ -42,6 +46,7 @@ class GridDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Item> myList = [item1, item2, item3, item4];
     int submit = 0;
+    int id = 0;
 
     return Flexible(
         child: GridView.count(
@@ -92,16 +97,82 @@ class GridDashboard extends StatelessWidget {
                             fetchPaciente();
                           }
                           else if("Ambulância" == data.title) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => CheckBoxTela(this.cpf)),
-                            );
+                            Future<Emergencia> fetchEmergencia() async {
+                              String idString = id.toString();
+                              final response = await http.get("https://takecare-api.herokuapp.com/api/call/emergency/$idString",
+                                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                              );
+                              print(response.statusCode);
+                              if (response.statusCode == 200) {
+                                var retorno = Emergencia.fromJson(json.decode(response.body));
+                                String message = retorno.getMessageObject();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => WaitScreen(this.cpf, message)),
+                                );
+                              }
+                           }
+                            PacienteObject p = new PacienteObject();
+                            Future<Paciente> fetchPaciente() async {
+                              String cpf = this.cpf;
+                              String jsonBody = '{"cpf": "$cpf"}';
+                              final response = await http.post("https://takecare-api.herokuapp.com/api/v1/user/getByCpf", body: jsonBody,
+                                  headers: {"Accept": "application/json", "Content-Type": "application/json"});
+                              if(response.statusCode == 200) {
+                                var paciente = Paciente.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+                                p.setcpf(paciente.paciente.cpf);
+                                p.setNumCasa(paciente.paciente.getNumCasa());
+                                p.setIdPlano(paciente.paciente.getIdPlano());
+                                p.setEmail(paciente.paciente.getEmail());
+                                p.setId(paciente.paciente.getId());
+                                p.setName(paciente.paciente.getName());
+                                p.setEndereco(paciente.paciente.getEndereco());
+                                id = p.getId();
+                                fetchEmergencia();
+                                return paciente;
+                              }
+                            }
+                            fetchPaciente();
                           }
                           else if("Histórico" == data.title) {
-//                            Navigator.push(
-//                              context,
-//                              MaterialPageRoute(builder: (context) => HomePage()),
-//                            );
+                            String _nomePaciente = "";
+                            Future<Historico> fetchHistorico() async {
+                              String idString = id.toString();
+                              final response = await http.get("https://takecare-api.herokuapp.com/api/history/getHistory/$idString", 
+                              headers: {"Accept": "application/json", "Content-Type": "application/json"});
+                              if (response.statusCode == 200) {
+                                var retorno = Historico.fromJson(json.decode(response.body));
+                                String dataHora = retorno.getDataHoraObject();
+                                int idChamado = retorno.getIdChamadoObject();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => HistoricPage(this.cpf, _nomePaciente, dataHora, idChamado))
+                                );
+                                return Historico.fromJson(json.decode(response.body));
+                              }
+                            }
+                            PacienteObject p = new PacienteObject();
+                            Future<Paciente> fetchPaciente() async {
+                              String cpf = this.cpf;
+                              String jsonBody = '{"cpf": "$cpf"}';
+                              final response = await http.post("https://takecare-api.herokuapp.com/api/v1/user/getByCpf", body: jsonBody,
+                                  headers: {"Accept": "application/json", "Content-Type": "application/json"});
+                              if(response.statusCode == 200) {
+                                var paciente = Paciente.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+                                p.setcpf(paciente.paciente.cpf);
+                                p.setNumCasa(paciente.paciente.getNumCasa());
+                                p.setIdPlano(paciente.paciente.getIdPlano());
+                                p.setEmail(paciente.paciente.getEmail());
+                                p.setId(paciente.paciente.getId());
+                                p.setName(paciente.paciente.getName());
+                                p.setEndereco(paciente.paciente.getEndereco());
+                                id = p.getId();
+                                _nomePaciente = p.getName();
+                                fetchHistorico();
+                                return paciente;
+                              }
+                            }
+                            fetchPaciente();
                           }
                         }
                       }),
