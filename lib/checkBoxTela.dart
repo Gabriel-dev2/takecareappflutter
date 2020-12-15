@@ -64,10 +64,10 @@ class _CheckBoxTela extends State<CheckBoxTela> {
             ),),
             onPressed: (){
               if(checked == 1){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => WaitScreen(this.cpf)),
-                );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => WaitScreen(this.cpf)),
+              //   );
               } else {
                   showDialog(
                       context: context,
